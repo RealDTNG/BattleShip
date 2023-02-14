@@ -1,6 +1,7 @@
 # Dawson Hoyle
 # Feb 9 2023
 # Made to Play Battle Ship alone
+
 # Import necessary libraries
 import os
 import random
@@ -11,6 +12,9 @@ os.system("cls")
 # Initialize variables
 hits = 0
 run = 34
+letters = ["A","B","C","D","E"]
+numbers = ["1","2","3","4","5"]
+check = ["X ","O "]
 txts = []     # list to store board positions
 rows = 1       # counter for number of rows in board
 menu = True
@@ -25,7 +29,7 @@ while rows <= 5:
     txts.append("E" + str(rows))
     rows += 1
 
-spots = txts    # create a copy of the board
+spots = txts.copy()    # create a copy of the board
 
 # Define a function to print the board
 def print_brd():
@@ -68,18 +72,18 @@ def player_input():
     global value_let, value_num, turns
     turns = 0  # Initialize the number of turns to 0
     value_let = input("Please Pick A Column To Fire At (Ex.. A,B,C...):").upper()  # Prompt the user for a column to fire at
-    while value_let not in 'ABCDE':  # If the column entered is not valid, prompt the user again until a valid column is entered
+    while value_let not in letters:  # If the column entered is not valid, prompt the user again until a valid column is entered
         print('Please Enter A Valid Column')
         value_let = input("Please Pick A Column To Fire At (Ex.. A,B,C...):").upper()
     value_num = input("Please Pick A Row To Fire At (Ex.. 1,2,3...):")  # Prompt the user for a row to fire at
-    while value_num not in '12345':  # If the row entered is not valid, prompt the user again until a valid row is entered
+    while value_num not in numbers:  # If the row entered is not valid, prompt the user again until a valid row is entered
         print('Please Enter A Valid Row')
         value_num = input("Please Pick A Row To Fire At (Ex.. 1,2,3...):")
     turns += 1  # Increment the number of turns taken by the player
     return int(value_num), let_to_num[value_let]  # Return the row and column as numeric values
 
 def fire():
-    global turns, hits  # Use the global variable "turns"
+    global turns, hits  # Use the global variables
     locate = let_to_num[value_let] + (int(value_num) - 1) * 5  # Convert the row and column to a single integer index
     if spots[locate] == 'S ':  # If the player hits a ship
         spots[locate] = 'X '  # Mark the spot as hit
@@ -89,9 +93,9 @@ def fire():
         if hits == 4:
             print("YOU WIN!!")
             exit()
-    elif spots[locate] not in 'XO':  # If the spot is not empty and has not been hit before, print an error message
-        spots[locate] = 'O'  # Mark the spot as missed
-        txts[locate] = 'O'
+    elif spots[locate] not in check:  # If the spot is empty put a miss
+        spots[locate] = 'O '  # Mark the spot as missed
+        txts[locate] = 'O '
         print("You've missed!")
     else:
         print("ERROR, PLEASE ENTER AN EMPTY SPOT")  # If the spot has already been hit, print an error message
